@@ -1,0 +1,157 @@
+name: TeamManager
+version: 1.0.0
+main: com.darkangel.teammanager.TeamManager
+api-version: 1.13
+author: DarkAngel
+description: A comprehensive team management plugin for Minecraft servers
+website: https://github.com/darkangel/teammanager
+
+commands:
+  team:
+    description: Main team management command
+    usage: /team <subcommand> [args]
+    aliases: [t]
+    permission: teammanager.command.team
+  
+  tc:
+    description: Team chat command
+    usage: /tc <message>
+    aliases: [teamchat]
+    permission: teammanager.command.teamchat
+  
+  teamgui:
+    description: Open the team management GUI
+    usage: /teamgui
+    aliases: [tgui]
+    permission: teammanager.command.gui
+
+permissions:
+  teammanager.*:
+    description: Gives access to all TeamManager commands
+    children:
+      teammanager.command.*: true
+      teammanager.team.*: true
+      teammanager.admin.*: true
+  
+  teammanager.command.*:
+    description: Gives access to all TeamManager commands
+    children:
+      teammanager.command.team: true
+      teammanager.command.teamchat: true
+      teammanager.command.gui: true
+  
+  teammanager.team.*:
+    description: Gives access to all team management commands
+    children:
+      teammanager.team.create: true
+      teammanager.team.disband: true
+      teammanager.team.invite: true
+      teammanager.team.join: true
+      teammanager.team.leave: true
+      teammanager.team.kick: true
+      teammanager.team.promote: true
+      teammanager.team.demote: true
+      teammanager.team.pvp: true
+      teammanager.team.info: true
+      teammanager.team.list: true
+      teammanager.team.sethome: true
+      teammanager.team.home: true
+      teammanager.team.chat: true
+      teammanager.team.color: true
+      teammanager.team.ally: true
+      teammanager.team.desc: true
+      teammanager.team.stats: true
+  
+  teammanager.admin.*:
+    description: Gives access to administrative commands
+    children:
+      teammanager.admin.setlevel: true
+      
+  # Default permissions for players
+  teammanager.command.team:
+    description: Allows use of the /team command
+    default: true
+  
+  teammanager.command.teamchat:
+    description: Allows use of the /tc command
+    default: true
+  
+  teammanager.command.gui:
+    description: Allows use of the /teamgui command
+    default: true
+  
+  teammanager.team.create:
+    description: Allows creating a team
+    default: true
+  
+  teammanager.team.disband:
+    description: Allows disbanding a team
+    default: true
+  
+  teammanager.team.invite:
+    description: Allows inviting players to a team
+    default: true
+  
+  teammanager.team.join:
+    description: Allows joining a team
+    default: true
+  
+  teammanager.team.leave:
+    description: Allows leaving a team
+    default: true
+  
+  teammanager.team.kick:
+    description: Allows kicking players from a team
+    default: true
+  
+  teammanager.team.promote:
+    description: Allows promoting team members
+    default: true
+  
+  teammanager.team.demote:
+    description: Allows demoting team recruiters
+    default: true
+  
+  teammanager.team.pvp:
+    description: Allows toggling team PvP
+    default: true
+  
+  teammanager.team.info:
+    description: Allows viewing team information
+    default: true
+  
+  teammanager.team.list:
+    description: Allows viewing all teams
+    default: true
+  
+  teammanager.team.sethome:
+    description: Allows setting a team home
+    default: true
+  
+  teammanager.team.home:
+    description: Allows teleporting to a team home
+    default: true
+  
+  teammanager.team.chat:
+    description: Allows using team chat
+    default: true
+  
+  teammanager.team.color:
+    description: Allows changing team color
+    default: true
+  
+  teammanager.team.ally:
+    description: Allows managing team alliances
+    default: true
+  
+  teammanager.team.desc:
+    description: Allows setting team description
+    default: true
+  
+  teammanager.team.stats:
+    description: Allows viewing team statistics
+    default: true
+  
+  teammanager.admin.setlevel:
+    description: Allows setting team level
+    default: op 

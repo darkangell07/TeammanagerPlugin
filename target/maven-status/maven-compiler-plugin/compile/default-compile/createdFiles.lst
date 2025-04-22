@@ -1,0 +1,13 @@
+com\darkangel\teammanager\gui\TeamGUIListener.class
+com\darkangel\teammanager\managers\TeamDataManager.class
+com\darkangel\teammanager\listeners\ChatListener.class
+com\darkangel\teammanager\commands\TeamCommand.class
+com\darkangel\teammanager\utils\MaterialUtil.class
+com\darkangel\teammanager\listeners\GUIChatListener.class
+com\darkangel\teammanager\utils\VersionUtil.class
+com\darkangel\teammanager\TeamManager.class
+com\darkangel\teammanager\gui\TeamGUI.class
+com\darkangel\teammanager\models\Team.class
+com\darkangel\teammanager\commands\TeamChatCommand.class
+com\darkangel\teammanager\listeners\PvPListener.class
+com\darkangel\teammanager\commands\TeamGuiCommand.class

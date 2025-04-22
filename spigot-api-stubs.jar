@@ -1,0 +1,239 @@
+PK
+     5gYW               org/PK
+     5gYW               org/bukkit/PK
+     5gYW               org/bukkit/plugin/PK
+     5gYW               org/bukkit/plugin/java/PK
+     5gYW            &   org/bukkit/plugin/java/JavaPlugin.class
+package org.bukkit.plugin.java;
+
+public abstract class JavaPlugin {
+    public void saveDefaultConfig() {}
+    public org.bukkit.command.PluginCommand getCommand(String name) { return null; }
+    public org.bukkit.Server getServer() { return null; }
+    public java.util.logging.Logger getLogger() { return null; }
+}
+PK
+     5gYW               org/bukkit/command/PK
+     5gYW            (   org/bukkit/command/PluginCommand.class
+package org.bukkit.command;
+
+public class PluginCommand {
+    public void setExecutor(CommandExecutor executor) {}
+}
+PK
+     5gYW            &   org/bukkit/command/CommandExecutor.class
+package org.bukkit.command;
+
+public interface CommandExecutor {
+    boolean onCommand(CommandSender sender, Command command, String label, String[] args);
+}
+PK
+     5gYW            %   org/bukkit/command/CommandSender.class
+package org.bukkit.command;
+
+public interface CommandSender {
+    void sendMessage(String message);
+}
+PK
+     5gYW                org/bukkit/command/Command.class
+package org.bukkit.command;
+
+public abstract class Command {
+}
+PK
+     5gYW            #   org/bukkit/command/TabCompleter.class
+package org.bukkit.command;
+
+public interface TabCompleter {
+    java.util.List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args);
+}
+PK
+     5gYW               org/bukkit/Bukkit.class
+package org.bukkit;
+
+public class Bukkit {
+    public static org.bukkit.scoreboard.ScoreboardManager getScoreboardManager() { return null; }
+    public static java.util.Collection<org.bukkit.entity.Player> getOnlinePlayers() { return null; }
+    public static org.bukkit.entity.Player getPlayer(java.util.UUID id) { return null; }
+    public static org.bukkit.OfflinePlayer getOfflinePlayer(java.util.UUID id) { return null; }
+}
+PK
+     5gYW                org/bukkit/Server.class
+package org.bukkit;
+
+public interface Server {
+    org.bukkit.plugin.PluginManager getPluginManager();
+}
+PK
+     5gYW               org/bukkit/plugin/PluginManager.class
+package org.bukkit.plugin;
+
+public interface PluginManager {
+    void registerEvents(org.bukkit.event.Listener listener, org.bukkit.plugin.Plugin plugin);
+}
+PK
+     5gYW               org/bukkit/plugin/Plugin.class
+package org.bukkit.plugin;
+
+public interface Plugin {
+    java.io.File getDataFolder();
+}
+PK
+     5gYW               org/bukkit/event/PK
+     5gYW            "   org/bukkit/event/EventHandler.class
+package org.bukkit.event;
+
+public @interface EventHandler {
+    EventPriority priority() default EventPriority.NORMAL;
+}
+PK
+     5gYW            $   org/bukkit/event/EventPriority.class
+package org.bukkit.event;
+
+public enum EventPriority {
+    LOWEST, LOW, NORMAL, HIGH, HIGHEST, MONITOR
+}
+PK
+     5gYW               org/bukkit/event/Listener.class
+package org.bukkit.event;
+
+public interface Listener {
+}
+PK
+     5gYW               org/bukkit/event/entity/PK
+     5gYW            0   org/bukkit/event/entity/EntityDamageByEntityEvent.class
+package org.bukkit.event.entity;
+
+public class EntityDamageByEntityEvent extends org.bukkit.event.Event {
+    public org.bukkit.entity.Entity getEntity() { return null; }
+    public org.bukkit.entity.Entity getDamager() { return null; }
+    public void setCancelled(boolean cancel) {}
+}
+PK
+     5gYW               org/bukkit/event/Event.class
+package org.bukkit.event;
+
+public abstract class Event {
+}
+PK
+     5gYW               org/bukkit/event/player/PK
+     5gYW            ,   org/bukkit/event/player/AsyncPlayerChatEvent.class
+package org.bukkit.event.player;
+
+public class AsyncPlayerChatEvent extends org.bukkit.event.Event {
+    public org.bukkit.entity.Player getPlayer() { return null; }
+    public String getMessage() { return null; }
+    public void setCancelled(boolean cancel) {}
+}
+PK
+     5gYW               org/bukkit/entity/PK
+     5gYW               org/bukkit/entity/Entity.class
+package org.bukkit.entity;
+
+public interface Entity {
+}
+PK
+     5gYW               org/bukkit/entity/Player.class
+package org.bukkit.entity;
+
+public interface Player extends Entity {
+    java.util.UUID getUniqueId();
+    String getName();
+    boolean isOnline();
+    boolean hasPermission(String permission);
+    void sendMessage(String message);
+}
+PK
+     5gYW            "   org/bukkit/entity/Projectile.class
+package org.bukkit.entity;
+
+public interface Projectile extends Entity {
+    org.bukkit.projectiles.ProjectileSource getShooter();
+}
+PK
+     5gYW               org/bukkit/projectiles/PK
+     5gYW            -   org/bukkit/projectiles/ProjectileSource.class
+package org.bukkit.projectiles;
+
+public interface ProjectileSource {
+}
+PK
+     5gYW               org/bukkit/OfflinePlayer.class
+package org.bukkit;
+
+public interface OfflinePlayer {
+    String getName();
+}
+PK
+     5gYW               org/bukkit/ChatColor.class
+package org.bukkit;
+
+public enum ChatColor {
+    BLACK, DARK_BLUE, DARK_GREEN, DARK_AQUA, DARK_RED, DARK_PURPLE, GOLD, GRAY,
+    DARK_GRAY, BLUE, GREEN, AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE, MAGIC, BOLD,
+    STRIKETHROUGH, UNDERLINE, ITALIC, RESET;
+    
+    public static String translateAlternateColorCodes(char altColorChar, String textToTranslate) {
+        return textToTranslate;
+    }
+}
+PK
+     5gYW               org/bukkit/scoreboard/PK
+     5gYW            *   org/bukkit/scoreboard/ScoreboardManager.class
+package org.bukkit.scoreboard;
+
+public interface ScoreboardManager {
+    Scoreboard getMainScoreboard();
+}
+PK
+     5gYW            "   org/bukkit/scoreboard/Scoreboard.class
+package org.bukkit.scoreboard;
+
+public interface Scoreboard {
+    Team getTeam(String name);
+    Team registerNewTeam(String name);
+}
+PK
+     5gYW               org/bukkit/scoreboard/Team.class
+package org.bukkit.scoreboard;
+
+public interface Team {
+    void setAllowFriendlyFire(boolean enabled);
+    void setCanSeeFriendlyInvisibles(boolean enabled);
+    void addEntry(String entry);
+    void removeEntry(String entry);
+    void unregister();
+}
+PK
+     5gYW            !   org/bukkit/configuration/file/PK
+     5gYW            2   org/bukkit/configuration/file/FileConfiguration.class
+package org.bukkit.configuration.file;
+
+public abstract class FileConfiguration {
+    public void set(String path, Object value) {}
+    public org.bukkit.configuration.ConfigurationSection getConfigurationSection(String path) { return null; }
+    public org.bukkit.configuration.ConfigurationSection createSection(String path) { return null; }
+    public void save(java.io.File file) throws java.io.IOException {}
+}
+PK
+     5gYW            0   org/bukkit/configuration/file/YamlConfiguration.class
+package org.bukkit.configuration.file;
+
+public class YamlConfiguration extends FileConfiguration {
+    public static FileConfiguration loadConfiguration(java.io.File file) { return null; }
+}
+PK
+     5gYW               org/bukkit/configuration/PK
+     5gYW            /   org/bukkit/configuration/ConfigurationSection.class
+package org.bukkit.configuration;
+
+public interface ConfigurationSection {
+    String getString(String path, String def);
+    boolean getBoolean(String path, boolean def);
+    java.util.List<String> getStringList(String path);
+    java.util.Set<String> getKeys(boolean deep);
+    ConfigurationSection getConfigurationSection(String path);
+    void set(String path, Object value);
+    ConfigurationSection createSection(String name);
+}
+PK 
