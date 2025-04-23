@@ -1,6 +1,6 @@
 # TeamManager
 
-A team management plugin for Paper Minecraft servers that I've been working on since August 2023.
+A team management plugin for Paper Minecraft servers that I've been working on since November 2024.
 
 ## Features
 
@@ -51,6 +51,7 @@ Still planning to add:
 - Team banks/vaults
 - Maybe team territories?
 - Team events system
+- Introducing database system
 
 ## Permissions
 All the standard permissions are included - check plugin.yml for details.
@@ -62,4 +63,5 @@ All the standard permissions are included - check plugin.yml for details.
 
 ## Credits
 This was built and tested on Paper 1.20.2
-Thanks to my friends for testing! 
+Mail me at darka9962@gmail.com or 
+Contact me at discord: 918152747377905675
