@@ -1,71 +1,65 @@
 # TeamManager
 
-A comprehensive team management plugin for Minecraft Paper servers (1.20+).
+A team management plugin for Paper Minecraft servers that I've been working on since August 2023.
 
 ## Features
 
-- **Team Management**: Create, disband, and manage teams with different roles (Owner, Recruit, Member)
-- **Team Invites**: Invite players to your team and accept invites
-- **Team PvP Control**: Toggle friendly-fire within your team
-- **Team Chat**: Chat privately with your team members
-- **Persistence**: Team data is saved and loaded automatically
+- **Team Management**: Create, disband, and manage teams with different roles
+- **Team Chat**: Private chat for team members with `/tc`
+- **Team Homes**: Teleport to team's home location
+- **Team Colors**: Each team can have its own color
+- **Team Levels**: Teams can level up to get more members
+- **Team Alliances**: Form alliances with other teams
 
 ## Commands
 
-### Team Commands
+### Main Commands
+- `/team create <name>` - Create a new team
+- `/team disband` - Delete your team (owner only, requires confirmation)
+- `/team invite <player>` - Invite someone to your team
+- `/team join <name>` - Accept an invite
+- `/team leave` - Leave your current team
+- `/team promote <player>` - Promote a member to recruiter
+- `/team kick <player>` - Remove someone from your team
+- `/team info [name]` - View team info
+- `/team list` - Show all teams
 
-- `/team create <name>`: Creates a team, makes the executor the **Owner**
-- `/team disband`: (Owner only) Deletes the team
-- `/team invite <player>`: (Owner/Recruit) Invites a player to join the team
-- `/team join <name>`: Accepts an invite to join a team
-- `/team leave`: Leaves your current team
-- `/team kick <player>`: (Owner/Recruit) Removes a member from the team
-- `/team pvp [on|off]`: (Owner only) Toggles friendly-fire for that team
-- `/team info [name]`: Shows team details (Owner, Recruits, Members, PvP status)
-- `/team list`: Lists all existing teams
-- `/team help`: Shows help information
+### Home Commands
+- `/team sethome` - Set your team's home
+- `/team home` - Teleport to team home
+
+### Customization
+- `/team color <color>` - Set team color
+- `/team ally <team>` - Request an alliance
 
 ### Team Chat
-
-- `/tc <message>`: Sends a message only to your team members
-
-## Permissions
-
-- `teammanager.team.create`: Create teams
-- `teammanager.team.disband`: Disband teams (as owner)
-- `teammanager.team.invite`: Invite players to teams (as owner/recruit)
-- `teammanager.team.join`: Join teams with invites
-- `teammanager.team.leave`: Leave teams
-- `teammanager.team.kick`: Kick players from teams (as owner/recruit)
-- `teammanager.team.pvp`: Toggle team PvP (as owner)
-- `teammanager.team.info`: View team information
-- `teammanager.team.list`: List all teams
-- `teammanager.team.chat`: Use team chat
-
-## Role Permissions
-
-- **Owner**: Full control (disband, pvp toggle, invite, kick)
-- **Recruit**: Can invite or kick, but not disband or toggle PvP
-- **Member**: No management permissions
+- `/tc <message>` - Send a message to team
+- `/team tctoggle` - Toggle team chat on/off
 
 ## Installation
 
-1. Download the TeamManager.jar file
-2. Place it in your server's plugins folder
-3. Restart your server
-4. Configure the plugin (optional)
+1. Drop the .jar in your plugins folder
+2. Restart your server
+3. Configure as needed
 
-## Configuration
+## Development Notes
 
-The plugin creates two configuration files:
+This has been a fun project to work on! Had some issues with team chat at first but got it working nicely. Team homes and colors were a bit tricky with the serialization, but I'm happy with how it came out.
 
-- `config.yml`: Contains general plugin settings
-- `teams.yml`: Contains team data (automatically managed by the plugin)
+Still planning to add:
+- Team stats tracking
+- Team banks/vaults
+- Maybe team territories?
+- Team events system
 
-## Support
+## Permissions
+All the standard permissions are included - check plugin.yml for details.
 
-Created by darkangel.
-If you want to use it contact me on darka9962@gmail.com.
-## License
+## Known Issues
+- Sometimes the scoreboard teams get out of sync if the server crashes
+- Need to improve invite storage for offline players
+- Need to test more with larger servers
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
+## Credits
+This was built and tested on Paper 1.20.2
+Thanks to my friends for testing! 

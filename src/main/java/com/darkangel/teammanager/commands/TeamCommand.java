@@ -41,8 +41,7 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
     private final List<String> subCommands = Arrays.asList(
             "create", "disband", "invite", "join", "leave", 
             "kick", "pvp", "info", "list", "help", "promote", "confirm",
-            "sethome", "home", "tctoggle", "color", "ally", "setlevel", "demote",
-            "desc", "stats"
+            "sethome", "home", "tctoggle", "color", "ally", "setlevel"
     );
     
     private final List<String> pvpOptions = Arrays.asList("on", "off");
@@ -114,13 +113,7 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
         
         Player player = (Player) sender;
         
-        if (args.length == 0) {
-            // Open the team GUI instead of showing help
-            plugin.getTeamGUI().openMainMenu(player);
-            return true;
-        }
-        
-        if (args[0].equalsIgnoreCase("help")) {
+        if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
             showHelp(player);
             return true;
         }
@@ -158,9 +151,6 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
             case "promote":
                 handlePromote(player, args);
                 break;
-            case "demote":
-                handleDemote(player, args);
-                break;
             case "confirm":
                 handleConfirm(player);
                 break;
@@ -181,12 +171,6 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
                 break;
             case "setlevel":
                 handleSetLevel(player, args);
-                break;
-            case "desc":
-                handleSetDescription(player, args);
-                break;
-            case "stats":
-                handleShowStats(player, args);
                 break;
             default:
                 player.sendMessage(ChatColor.RED + "Unknown sub-command. Type /team help for help.");
@@ -263,7 +247,6 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
         player.sendMessage(ChatColor.YELLOW + "/team leave" + ChatColor.WHITE + " - Leave your current team");
         player.sendMessage(ChatColor.YELLOW + "/team kick <player>" + ChatColor.WHITE + " - Kick a player from your team");
         player.sendMessage(ChatColor.YELLOW + "/team promote <player>" + ChatColor.WHITE + " - Promote a member to recruiter");
-        player.sendMessage(ChatColor.YELLOW + "/team demote <player>" + ChatColor.WHITE + " - Demote a recruiter to member");
         player.sendMessage(ChatColor.YELLOW + "/team pvp [on|off]" + ChatColor.WHITE + " - Toggle team PvP (Owner only)");
         player.sendMessage(ChatColor.YELLOW + "/team info [name]" + ChatColor.WHITE + " - Show team information");
         player.sendMessage(ChatColor.YELLOW + "/team list" + ChatColor.WHITE + " - List all teams");
@@ -272,8 +255,6 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
         player.sendMessage(ChatColor.YELLOW + "/team tctoggle" + ChatColor.WHITE + " - Toggle team chat mode");
         player.sendMessage(ChatColor.YELLOW + "/team color <color>" + ChatColor.WHITE + " - Set team color");
         player.sendMessage(ChatColor.YELLOW + "/team ally <team>" + ChatColor.WHITE + " - Request alliance with another team");
-        player.sendMessage(ChatColor.YELLOW + "/team desc <text>" + ChatColor.WHITE + " - Set team description");
-        player.sendMessage(ChatColor.YELLOW + "/team stats [name]" + ChatColor.WHITE + " - View team statistics");
         player.sendMessage(ChatColor.YELLOW + "/team setlevel <1-10>" + ChatColor.WHITE + " - Set team level (Admin only)");
         player.sendMessage(ChatColor.YELLOW + "/team help" + ChatColor.WHITE + " - Show this help message");
     }
@@ -711,12 +692,6 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
         String ownerName = Bukkit.getOfflinePlayer(team.getOwner()).getName();
         player.sendMessage(ChatColor.YELLOW + "Owner: " + ChatColor.WHITE + (ownerName != null ? ownerName : "Unknown"));
         
-        // Description
-        player.sendMessage(ChatColor.YELLOW + "Description: " + ChatColor.WHITE + team.getDescription());
-        
-        // Age
-        player.sendMessage(ChatColor.YELLOW + "Age: " + ChatColor.WHITE + team.getAgeInDays() + " days");
-        
         // PvP status
         String pvpStatus = team.isPvpEnabled() ? "Enabled" : "Disabled";
         player.sendMessage(ChatColor.YELLOW + "PvP: " + ChatColor.WHITE + pvpStatus);
@@ -1139,199 +1114,5 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
         if (teamAlliances.containsKey(team2)) {
             teamAlliances.get(team2).remove(team1);
         }
-    }
-
-    /**
-     * Handles demoting a team recruiter to member
-     */
-    private void handleDemote(Player player, String[] args) {
-        if (!player.hasPermission("teammanager.team.promote")) {
-            player.sendMessage(ChatColor.RED + "You don't have permission to demote team members.");
-            return;
-        }
-        
-        if (args.length < 2) {
-            player.sendMessage(ChatColor.RED + "Usage: /team demote <player>");
-            return;
-        }
-        
-        // Get player's team
-        Team team = teamDataManager.getPlayerTeam(player.getUniqueId());
-        
-        if (team == null) {
-            player.sendMessage(ChatColor.RED + "You're not in a team.");
-            return;
-        }
-        
-        // Check if player is the owner
-        if (!team.isOwner(player.getUniqueId())) {
-            player.sendMessage(ChatColor.RED + "Only the team owner can demote recruiters.");
-            return;
-        }
-        
-        // Get the target player
-        String targetName = args[1];
-        UUID targetId = null;
-        
-        // Try to find player by name in team recruiters
-        for (UUID recruitId : team.getRecruits()) {
-            String memberName = Bukkit.getOfflinePlayer(recruitId).getName();
-            if (memberName != null && memberName.equalsIgnoreCase(targetName)) {
-                targetId = recruitId;
-                targetName = memberName; // Use correct case
-                break;
-            }
-        }
-        
-        if (targetId == null) {
-            player.sendMessage(ChatColor.RED + "Player '" + targetName + "' is not a recruiter in your team.");
-            return;
-        }
-        
-        // Demote recruiter to member
-        if (team.demoteToMember(targetId)) {
-            teamDataManager.saveTeams();
-            
-            player.sendMessage(ChatColor.GREEN + "You've demoted " + targetName + " to a regular team member.");
-            
-            // Notify demoted player if online
-            Player targetPlayer = Bukkit.getPlayer(targetId);
-            if (targetPlayer != null && targetPlayer.isOnline()) {
-                targetPlayer.sendMessage(ChatColor.YELLOW + "You've been demoted to a regular member in team '" + team.getName() + "'.");
-            }
-        } else {
-            player.sendMessage(ChatColor.RED + "Failed to demote " + targetName + ". They might not be a recruiter.");
-        }
-    }
-
-    /**
-     * Toggles team chat for a player
-     */
-    public void toggleTeamChat(Player player) {
-        UUID playerId = player.getUniqueId();
-        
-        if (teamChatToggled.contains(playerId)) {
-            teamChatToggled.remove(playerId);
-            player.sendMessage(ChatColor.RED + "Team chat mode " + ChatColor.BOLD + "disabled" + ChatColor.RED + ".");
-        } else {
-            Team team = teamDataManager.getPlayerTeam(playerId);
-            if (team == null) {
-                player.sendMessage(ChatColor.RED + "You need to be in a team to use team chat.");
-                return;
-            }
-            
-            teamChatToggled.add(playerId);
-            player.sendMessage(ChatColor.GREEN + "Team chat mode " + ChatColor.BOLD + "enabled" + ChatColor.GREEN + ".");
-        }
-    }
-    
-    /**
-     * Checks if a player has team chat enabled
-     * @param playerId The UUID of the player to check
-     * @return true if the player has team chat enabled, false otherwise
-     */
-    public boolean isInTeamChat(UUID playerId) {
-        return teamChatToggled.contains(playerId);
-    }
-
-    /**
-     * Handle setting team description
-     */
-    private void handleSetDescription(Player player, String[] args) {
-        if (!player.hasPermission("teammanager.team.desc")) {
-            player.sendMessage(ChatColor.RED + "You don't have permission to set team description.");
-            return;
-        }
-        
-        if (args.length < 2) {
-            player.sendMessage(ChatColor.RED + "Usage: /team desc <description>");
-            return;
-        }
-        
-        // Get player's team
-        Team team = teamDataManager.getPlayerTeam(player.getUniqueId());
-        
-        if (team == null) {
-            player.sendMessage(ChatColor.RED + "You're not in a team.");
-            return;
-        }
-        
-        // Check if player is the owner
-        if (!team.isOwner(player.getUniqueId())) {
-            player.sendMessage(ChatColor.RED + "Only the team owner can set the team description.");
-            return;
-        }
-        
-        // Build the description from the arguments
-        StringBuilder descBuilder = new StringBuilder();
-        for (int i = 1; i < args.length; i++) {
-            if (i > 1) descBuilder.append(" ");
-            descBuilder.append(args[i]);
-        }
-        String description = descBuilder.toString();
-        
-        // Check length
-        if (description.length() > 100) {
-            player.sendMessage(ChatColor.RED + "Description is too long. Maximum length is 100 characters.");
-            return;
-        }
-        
-        // Set the description
-        team.setDescription(description);
-        teamDataManager.saveTeams();
-        
-        player.sendMessage(ChatColor.GREEN + "Team description has been updated!");
-        
-        // Notify other online team members
-        for (Player member : team.getOnlineMembers()) {
-            if (!member.equals(player)) {
-                member.sendMessage(ChatColor.YELLOW + "Your team's description has been updated to: " + 
-                        ChatColor.WHITE + description);
-            }
-        }
-    }
-    
-    /**
-     * Handle showing team statistics
-     */
-    private void handleShowStats(Player player, String[] args) {
-        if (!player.hasPermission("teammanager.team.stats")) {
-            player.sendMessage(ChatColor.RED + "You don't have permission to view team statistics.");
-            return;
-        }
-        
-        // Get the team
-        Team team;
-        
-        if (args.length >= 2) {
-            // Show stats for specific team
-            team = teamDataManager.getTeam(args[1]);
-            
-            if (team == null) {
-                player.sendMessage(ChatColor.RED + "Team '" + args[1] + "' doesn't exist.");
-                return;
-            }
-        } else {
-            // Show stats for player's team
-            team = teamDataManager.getPlayerTeam(player.getUniqueId());
-            
-            if (team == null) {
-                player.sendMessage(ChatColor.RED + "You're not in a team. Use '/team stats <name>' to view stats for other teams.");
-                return;
-            }
-        }
-        
-        // Display team stats
-        player.sendMessage(ChatColor.GREEN + "===== " + team.getColor() + team.getName() + ChatColor.GREEN + " Statistics =====");
-        player.sendMessage(ChatColor.YELLOW + "Age: " + ChatColor.WHITE + team.getAgeInDays() + " days");
-        player.sendMessage(ChatColor.YELLOW + "Level: " + ChatColor.WHITE + team.getLevel());
-        player.sendMessage(ChatColor.YELLOW + "Members: " + ChatColor.WHITE + team.getMemberCount() + "/" + team.getMaxMembers());
-        player.sendMessage(ChatColor.YELLOW + "Kills: " + ChatColor.WHITE + team.getTotalKills());
-        player.sendMessage(ChatColor.YELLOW + "Deaths: " + ChatColor.WHITE + team.getTotalDeaths());
-        player.sendMessage(ChatColor.YELLOW + "K/D Ratio: " + ChatColor.WHITE + String.format("%.2f", team.getKDRatio()));
-        
-        // Calculate team power - this is just a sample formula, you can customize it
-        int teamPower = (int)(team.getLevel() * 10 + team.getMemberCount() * 5 + team.getKDRatio() * 20);
-        player.sendMessage(ChatColor.YELLOW + "Team Power: " + ChatColor.GOLD + teamPower);
     }
 } 

@@ -1,70 +1,25 @@
 # TeamManager Configuration
-# Version 1.0.0
 
-# Enable or disable debug mode (adds additional log messages)
-debug_mode: false
-
-# Database settings
-database:
-  # Database type: sqlite or mysql
-  type: sqlite
-  # Only needed for MySQL:
-  host: localhost
-  port: 3306
-  database: teammanager
-  username: root
-  password: password
-  
 # Team settings
 teams:
-  # Maximum number of teams allowed on the server (0 = unlimited)
-  max_teams: 0
-  # Default maximum level for teams
-  max_level: 10
-  # Default PvP state for new teams
-  default_pvp_enabled: false
-  # Whether to allow friendly fire in PvP-enabled teams
-  allow_friendly_fire: true
-  # Cooldown (in seconds) between team home teleports
-  home_cooldown: 60
-  # Whether teams can set colored chat prefixes
-  colored_chat: true
+  # Maximum number of players in a team (0 = unlimited)
+  max-players: 0
   
+  # Whether to allow friendly fire within teams by default for new teams
+  default-pvp-enabled: false
+  
+  # Team name restrictions
+  name:
+    min-length: 3
+    max-length: 16
+    # Regex pattern for allowed team names (letters, numbers, and underscores)
+    pattern: '^[a-zA-Z0-9_]{3,16}$'
+
 # Chat settings
 chat:
   # Format for team chat messages
-  team_chat_format: "&3[Team] &r{player}: {message}"
-  # Format for team prefixes in global chat
-  global_chat_format: "&r{team_color}[{team_name}] &r{player}: {message}"
-  # Range for local team chat (0 = global)
-  local_chat_range: 0
+  # Available placeholders: {player}, {team}, {message}
+  format: '&b[Team Chat] &e{player}&f: {message}'
   
-# Admin settings
-admin:
-  # Whether admins can bypass team restrictions
-  bypass_restrictions: true
-  # Whether to notify admins of team changes
-  notify_admins: true
-  
-# Statistics
-statistics:
-  # Whether to track team statistics
-  enabled: true
-  # Whether to broadcast achievements
-  broadcast_achievements: true
-  
-# Messages
-messages:
-  # Prefix for plugin messages
-  prefix: "&3[TeamManager] &r"
-  # Message shown when a player tries to attack a teammate with PvP disabled
-  team_pvp_disabled: "&cPvP is disabled in your team!"
-  # Message shown when a player creates a team
-  team_created: "&aTeam '{team}' has been created successfully!"
-  # Message shown when a player is invited to a team
-  invited_to_team: "&aYou have been invited to join team '{team}'."
-  # Message shown when a player joins a team
-  joined_team: "&aYou have joined team '{team}'!"
-  
-# Don't modify this
-config_version: 1 
+  # Whether to also send team chat messages to console
+  log-to-console: true 

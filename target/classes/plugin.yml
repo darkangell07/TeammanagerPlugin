@@ -15,10 +15,6 @@ commands:
     description: Send a message to your team
     usage: /tc <message>
     aliases: [teamchat]
-  teamgui:
-    description: Open the team management GUI
-    usage: /teamgui
-    aliases: [tgui]
 
 permissions:
   teammanager.team.*:
@@ -36,10 +32,6 @@ permissions:
       teammanager.team.list: true
       teammanager.team.chat: true
       teammanager.team.promote: true
-      teammanager.team.color: true
-      teammanager.team.home: true
-      teammanager.team.sethome: true
-      teammanager.gui: true
   
   teammanager.team.create:
     description: Allows creation of teams
@@ -83,20 +75,4 @@ permissions:
     
   teammanager.team.promote:
     description: Allows promoting team members to recruiters (as owner)
-    default: true
-    
-  teammanager.team.color:
-    description: Allows changing team color (as owner)
-    default: true
-    
-  teammanager.team.home:
-    description: Allows teleporting to team home
-    default: true
-    
-  teammanager.team.sethome:
-    description: Allows setting team home location (as owner)
-    default: true
-    
-  teammanager.gui:
-    description: Allows using the team GUI
     default: true 

@@ -29,10 +29,6 @@ public class Team implements ConfigurationSerializable {
     private ChatColor color;
     private Location homeLocation;
     private int level;
-    private String description;
-    private long creationTime;
-    private int totalKills;
-    private int totalDeaths;
     
     // Constructor
     public Team(String name, UUID owner) {
@@ -44,10 +40,6 @@ public class Team implements ConfigurationSerializable {
         this.pvpEnabled = false;
         this.color = ChatColor.WHITE; // Default color
         this.level = 1; // Default level
-        this.description = "A mighty team of warriors!";
-        this.creationTime = System.currentTimeMillis();
-        this.totalKills = 0;
-        this.totalDeaths = 0;
     }
     
     // Constructor from serialized map
@@ -82,18 +74,6 @@ public class Team implements ConfigurationSerializable {
         
         // Load team level
         this.level = map.containsKey("level") ? (Integer) map.get("level") : 1;
-        
-        // Load team description
-        this.description = map.containsKey("description") ? 
-                (String) map.get("description") : "A mighty team of warriors!";
-        
-        // Load creation time
-        this.creationTime = map.containsKey("creation_time") ? 
-                (Long) map.get("creation_time") : System.currentTimeMillis();
-        
-        // Load team stats
-        this.totalKills = map.containsKey("total_kills") ? (Integer) map.get("total_kills") : 0;
-        this.totalDeaths = map.containsKey("total_deaths") ? (Integer) map.get("total_deaths") : 0;
         
         // Load home location if it exists
         if (map.containsKey("home")) {
@@ -144,16 +124,6 @@ public class Team implements ConfigurationSerializable {
         
         // Save team level
         map.put("level", level);
-        
-        // Save team description
-        map.put("description", description);
-        
-        // Save creation time
-        map.put("creation_time", creationTime);
-        
-        // Save team stats
-        map.put("total_kills", totalKills);
-        map.put("total_deaths", totalDeaths);
         
         // Save home location
         if (homeLocation != null) {
@@ -226,14 +196,6 @@ public class Team implements ConfigurationSerializable {
         return new HashSet<>(recruits);
     }
     
-    /**
-     * Get all recruiters (same as recruits for implementation purposes)
-     * @return Set of recruiter UUIDs
-     */
-    public Set<UUID> getRecruiters() {
-        return getRecruits();
-    }
-    
     public Set<UUID> getAllMembers() {
         Set<UUID> allMembers = new HashSet<>();
         allMembers.add(owner);
@@ -299,15 +261,6 @@ public class Team implements ConfigurationSerializable {
         return 5 + (level - 1) * 2; // Level 1: 5 members, Level 10: 23 members
     }
     
-    /**
-     * Get the total number of members in the team including the owner
-     * @return the total member count
-     */
-    public int getMemberCount() {
-        // Count owner + all members + all recruits
-        return 1 + members.size() + recruits.size();
-    }
-    
     // Team membership methods
     
     public boolean isOwner(UUID playerId) {
@@ -370,92 +323,5 @@ public class Team implements ConfigurationSerializable {
     
     public void removeInvite(UUID playerId) {
         invites.remove(playerId);
-    }
-    
-    /**
-     * Demotes a recruit to member
-     * @param playerId UUID of the player
-     * @return true if successful, false if player wasn't a recruit
-     */
-    public boolean demoteToMember(UUID playerId) {
-        if (recruits.remove(playerId)) {
-            members.add(playerId);
-            return true;
-        }
-        return false;
-    }
-    
-    // Add new getters and setters for the new fields
-    
-    /**
-     * Get the team's description
-     * @return the team description
-     */
-    public String getDescription() {
-        return description;
-    }
-    
-    /**
-     * Set the team's description
-     * @param description the new description
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    
-    /**
-     * Get the team's creation timestamp in milliseconds
-     * @return creation time
-     */
-    public long getCreationTime() {
-        return creationTime;
-    }
-    
-    /**
-     * Get the team's age in days
-     * @return age in days
-     */
-    public int getAgeInDays() {
-        long diff = System.currentTimeMillis() - creationTime;
-        return (int) (diff / (1000 * 60 * 60 * 24));
-    }
-    
-    /**
-     * Get the total kills by team members
-     * @return total kills
-     */
-    public int getTotalKills() {
-        return totalKills;
-    }
-    
-    /**
-     * Add a kill to the team's statistics
-     */
-    public void addKill() {
-        this.totalKills++;
-    }
-    
-    /**
-     * Get the total deaths of team members
-     * @return total deaths
-     */
-    public int getTotalDeaths() {
-        return totalDeaths;
-    }
-    
-    /**
-     * Add a death to the team's statistics
-     */
-    public void addDeath() {
-        this.totalDeaths++;
-    }
-    
-    /**
-     * Get the team's KD ratio
-     * @return KD ratio or 0 if no deaths
-     */
-    public double getKDRatio() {
-        if (totalDeaths == 0) return totalKills > 0 ? totalKills : 0;
-        return (double) totalKills / totalDeaths;
     }
 } 

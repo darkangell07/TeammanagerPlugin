@@ -270,32 +270,19 @@ public class TeamDataManager {
     }
 
     /**
-     * Gets all teams a player is invited to
+     * Gets a player's pending invites
      * @param playerId UUID of the player
-     * @return List of teams the player is invited to
+     * @return List of teams the player has been invited to
      */
     public List<Team> getPlayerInvites(UUID playerId) {
         List<Team> invites = new ArrayList<>();
+        
         for (Team team : teams.values()) {
             if (team.hasInvite(playerId)) {
                 invites.add(team);
             }
         }
-        return invites;
-    }
-    
-    /**
-     * Gets all team names a player is invited to
-     * @param playerId UUID of the player
-     * @return Set of team names the player is invited to
-     */
-    public Set<String> getPlayerInviteNames(UUID playerId) {
-        Set<String> invites = new HashSet<>();
-        for (Team team : teams.values()) {
-            if (team.hasInvite(playerId)) {
-                invites.add(team.getName());
-            }
-        }
+        
         return invites;
     }
 } 
